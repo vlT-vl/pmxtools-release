@@ -1,0 +1,119 @@
+pmxtools — Proprietary Closed-Source License
+Copyright (c) 2025–2026 Veronesi Lorenzo (vlT)
+All rights reserved.
+
+────────────────────────────────────────────────────────────
+
+SCOPE
+
+This license applies equally to every component of the pmxtools suite
+published or released from this repository index: pmxtools-cli (the
+command-line tool) and pmxtools-ui (the desktop application), in source or
+binary form, together with their documentation and release artifacts. In
+the text below, "the software" means each of them, individually and
+together. Both are closed-source and are developed in private repositories;
+this repository is a public release index only and contains no application
+source code.
+
+────────────────────────────────────────────────────────────
+
+NATURE OF THIS SOFTWARE
+
+This software is closed-source and proprietary. Its source code is not
+published and is not made available to the public. Access to the source
+code, in whole or in part, is granted exclusively at the sole discretion of
+the copyright holder, on a case-by-case basis, and only following an
+explicit request that has been explicitly agreed to in writing by the
+copyright holder. Absent such an explicit written agreement, no right of
+access to the source code is granted or implied by possession, use, or
+distribution of the compiled software.
+
+────────────────────────────────────────────────────────────
+
+GRANT OF USE
+
+Permission is granted, free of charge, to any person who has obtained a copy
+of this software through an official vlT distribution channel to use it for
+personal or professional purposes, subject to the conditions and
+restrictions set out below.
+
+────────────────────────────────────────────────────────────
+
+RESTRICTIONS
+
+1. NO SOURCE ACCESS — The source code is not published and may not be
+   accessed, requested, extracted, or reconstructed except as described
+   above (explicit request and explicit written agreement with the
+   copyright holder).
+
+2. NO MODIFICATION — The software may NOT be modified, adapted, translated,
+   or used as the basis for derivative works, in whole or in part, without
+   the prior written permission of the copyright holder.
+
+3. NO DISTRIBUTION — The software, whether in source or binary form, may NOT
+   be copied, forked, mirrored, republished, sublicensed, repackaged, or
+   otherwise distributed or made available to any third party through any
+   channel other than the official vlT distribution channels. Distribution
+   through any other channel is strictly and absolutely prohibited, even
+   free of charge and even to a recipient who already holds a valid copy.
+   Any act of distribution — through official channels or otherwise —
+   additionally requires the prior explicit written grant of the copyright
+   holder for that specific instance; merely holding a copy under this
+   license never by itself authorizes redistributing it.
+
+4. NO REVERSE ENGINEERING — Reverse engineering, decompilation, disassembly,
+   or any attempt to reconstruct the source code from a compiled or
+   obfuscated binary is strictly prohibited, except as required by
+   applicable mandatory law.
+
+5. NO COMMERCIAL EXPLOITATION — The software may NOT be sold, commercialized,
+   incorporated into a commercial product or service, or used to provide a
+   paid service to third parties without the prior written permission of the
+   copyright holder.
+
+────────────────────────────────────────────────────────────
+
+OFFICIAL DISTRIBUTION CHANNELS
+
+The only authorized sources for obtaining this software are the official
+vlT channels designated by the copyright holder (including, but not limited
+to, this repository's release index and any channel explicitly identified
+as such by the copyright holder). Any copy obtained through any other means
+is unauthorized, and this license does not apply to it.
+
+────────────────────────────────────────────────────────────
+
+INTELLECTUAL PROPERTY
+
+All intellectual property rights — including but not limited to copyright,
+trade secrets, know-how, and any applicable patents — remain, and shall at
+all times remain, exclusively the property of Veronesi Lorenzo (vlT). This
+license grants no ownership rights of any kind, and no right to the source
+code beyond what may be expressly and individually granted in writing as
+described above. The name, logos, and any associated trade dress of this
+software are the exclusive property of Veronesi Lorenzo (vlT) and may not
+be used without prior written consent.
+
+────────────────────────────────────────────────────────────
+
+DISCLAIMER OF WARRANTIES
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY —
+WHETHER IN CONTRACT, TORT, OR OTHERWISE — ARISING FROM OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+────────────────────────────────────────────────────────────
+
+GOVERNING LAW
+
+This license is governed by the laws of Italy. Any dispute arising from or
+relating to this license shall be subject to the exclusive jurisdiction of
+the courts of Milan (MI), Italy.
+
+────────────────────────────────────────────────────────────
+
+For licensing inquiries, source-access requests, or distribution
+authorization: veronesilorenzo@outlook.com
