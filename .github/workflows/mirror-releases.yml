@@ -1,10 +1,10 @@
 name: Mirror Releases
 
-# Runs only in this repo (the public vlT-vl/pmxtools "release index"). Polls
-# the two private source repos — pmxtools-cli and pmxtools-ui — for releases
-# not yet mirrored here, and republishes each one as an exact copy (same
-# assets, same notes) under a prefixed tag, so this public repo is always the
-# canonical place a release can be found even though the source lives private.
+# Runs only in this public release repo (vlT-vl/pmxtools-release). Polls the
+# private source repo vlT-vl/pmxtools for releases not yet mirrored here and
+# republishes each one as an exact copy (same tag, same assets, changelog
+# section as notes). No source code is ever copied: only release assets and
+# the matching CHANGELOG.md section.
 on:
   schedule:
     - cron: "*/30 * * * *"
@@ -19,37 +19,24 @@ permissions:
 
 jobs:
   mirror:
-    name: Mirror ${{ matrix.repo }}
+    name: Mirror releases
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - repo: vlT-vl/pmxtools-cli
-            prefix: cli-
-          - repo: vlT-vl/pmxtools-ui
-            prefix: ui-
     env:
-      # Default token for every gh call against THIS repo (release read/create).
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Read-only PAT scoped to pmxtools-cli + pmxtools-ui only — set once as a
-      # secret on this repo. Used explicitly (never as the ambient default)
-      # only for calls that read the private source repo below.
       SOURCE_TOKEN: ${{ secrets.PRIVATE_REPOS_READ_TOKEN }}
-      SOURCE_REPO: ${{ matrix.repo }}
-      TAG_PREFIX: ${{ matrix.prefix }}
+      SOURCE_REPO: vlT-vl/pmxtools
     steps:
       - name: Mirror non-draft releases not yet copied here
         run: |
           set -euo pipefail
 
           if [ -z "${SOURCE_TOKEN:-}" ]; then
-            echo "::error::PRIVATE_REPOS_READ_TOKEN secret is not set on this repo — cannot read ${SOURCE_REPO}. See readme.md for setup."
+            echo "::error::PRIVATE_REPOS_READ_TOKEN secret is not set on this repo — cannot read ${SOURCE_REPO}."
             exit 1
           fi
 
           GH_TOKEN="$SOURCE_TOKEN" gh api "repos/${SOURCE_REPO}/releases" --paginate \
-            --jq '.[] | select(.draft==false) | [.tag_name, .name] | @tsv' \
+            --jq '.[] | select(.draft==false) | [.tag_name, .prerelease] | @tsv' \
             > /tmp/source-releases.tsv
 
           if [ ! -s /tmp/source-releases.tsv ]; then
@@ -57,37 +44,18 @@ jobs:
             exit 0
           fi
 
-          while IFS=$'\t' read -r tag name; do
-            # Naming convention for this repo: <prefix>-v<version>-<build>,
-            # e.g. cli-v0.1.3-R100926 / ui-v0.1.1-R100926 — both products get a
-            # "v" before the version, prefixed with which product it is, so
-            # releases from both source repos stay distinguishable at a glance
-            # in one shared list. pmxtools-ui's own tags already start with
-            # "v" (e.g. v0.1.1-R100926); pmxtools-cli's own tags don't (e.g.
-            # 0.1.3-R100926) — normalize both to the same shape here.
-            case "$tag" in
-              v*) versioned_tag="$tag" ;;
-              *)  versioned_tag="v${tag}" ;;
-            esac
-            mirrored_tag="${TAG_PREFIX}${versioned_tag}"
-
-            if gh release view "$mirrored_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-              echo "already mirrored: ${mirrored_tag}"
+          while IFS=$'\t' read -r tag prerelease; do
+            if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+              echo "already mirrored: ${tag}"
               continue
             fi
 
-            echo "mirroring ${SOURCE_REPO}@${tag} -> ${mirrored_tag}"
+            echo "mirroring ${SOURCE_REPO}@${tag}"
             rm -rf /tmp/mirror-assets
             mkdir -p /tmp/mirror-assets
             GH_TOKEN="$SOURCE_TOKEN" gh release download "$tag" --repo "$SOURCE_REPO" --dir /tmp/mirror-assets --clobber
 
-            # Notes are the actual CHANGELOG.md section for this version, read
-            # straight from the source repo's CHANGELOG.md at this tag — never
-            # a link back to the source repo (it's private, a public visitor
-            # here couldn't follow it). If CHANGELOG.md doesn't exist at this
-            # tag, or has no matching "## <tag>" section (older releases that
-            # predate the changelog), fall back to an honest note instead.
-            changelog="$(GH_TOKEN="$SOURCE_TOKEN" gh api "repos/${SOURCE_REPO}/contents/CHANGELOG.md" -f ref="$tag" --jq '.content' 2>/dev/null | base64 --decode 2>/dev/null || true)"
+            changelog="$(GH_TOKEN="$SOURCE_TOKEN" gh api --method GET "repos/${SOURCE_REPO}/contents/CHANGELOG.md" -f ref="$tag" --jq '.content' 2>/dev/null | base64 --decode 2>/dev/null || true)"
             notes=""
             if [ -n "$changelog" ]; then
               notes="$(printf '%s' "$changelog" | awk -v heading="## ${tag}" '
@@ -100,11 +68,12 @@ jobs:
               notes="No changelog entry recorded for this release."
             fi
 
-            # Title always equals the mirrored tag (not the source's own
-            # release name) so it's self-describing on this shared repo,
-            # regardless of what the source repo happened to title it.
-            gh release create "$mirrored_tag" /tmp/mirror-assets/* \
+            flags=""
+            if [ "$prerelease" = "true" ]; then flags="--prerelease"; fi
+
+            gh release create "$tag" /tmp/mirror-assets/* \
               --repo "$GITHUB_REPOSITORY" \
-              --title "$mirrored_tag" \
-              --notes "$notes"
+              --title "$tag" \
+              --notes "$notes" \
+              $flags
           done < /tmp/source-releases.tsv

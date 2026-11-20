@@ -2,16 +2,15 @@
   <img src="pmxtools.png" alt="pmxtools" width="120" />
 </p>
 
-<h1 align="center">pmxtools</h1>
+<h1 align="center">pmxtools-release</h1>
 
 <p align="center">
-  Public release index for the pmxtools suite — Proxmox VE auditing &amp; desktop management tools<br/>
-  <sub>No source here — pmxtools-cli and pmxtools-ui are closed-source, private repositories</sub>
+  Official public releases of pmxtools — the desktop app for monitoring and managing Proxmox VE<br/>
+  <sub>No source here — pmxtools is closed-source</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/pmxtools--cli-0.1.3--R100926-blue?style=flat-square" alt="pmxtools-cli latest"/>
-  <img src="https://img.shields.io/badge/pmxtools--ui-0.1.1--R100926-blue?style=flat-square" alt="pmxtools-ui latest"/>
+  <a href="../../releases/latest"><img src="https://img.shields.io/github/v/release/vlT-vl/pmxtools-release?display_name=tag&sort=date&style=flat-square&label=latest" alt="latest release"/></a>
   <img src="https://img.shields.io/badge/source-private-critical?style=flat-square" alt="source-private"/>
   <img src="https://img.shields.io/badge/license-proprietary-critical?style=flat-square" alt="license"/>
 </p>
@@ -20,68 +19,25 @@
 
 ## Overview
 
-**pmxtools** is a suite of tools for auditing, inventorying and managing Proxmox VE infrastructures. The suite is split into two closed-source applications, each in its own private repository:
+**pmxtools** is a native desktop application (Go + React) that gives you a graphical control panel for monitoring and managing Proxmox VE infrastructures.
 
-| Repository | Type | Description |
-|---|---|---|
-| `pmxtools-cli` | CLI (Go) | Auditing and inventory tool for Proxmox VE infrastructures via API |
-| `pmxtools-ui` | Desktop app (Go + React, Nex framework) | Graphical control panel for monitoring and managing Proxmox VE, built on top of `pmxtools-cli`'s Proxmox client |
-
-This repository contains **no application source code**. It exists only as the public landing point for the suite and as an index of what each private repository releases, so that release history stays visible without exposing the source itself.
+This repository (`pmxtools-release`) is the official public place to download pmxtools. It contains **no application source code**: it only publishes the release builds of the desktop app, each with its changelog.
 
 ---
 
-## Release types
+## Downloads
 
-### pmxtools-cli
-
-Single self-contained binary, built per OS/architecture:
+Every release is published in the [Releases](../../releases) section (the badge above always shows the latest tag), with one zipped build per platform:
 
 | Platform | Artifact |
 |---|---|
-| Linux (amd64) | `pmxtools-<version>-linux-amd64` |
-| Windows (amd64) | `pmxtools-<version>-windows-amd64.exe` |
-| macOS (amd64) | `pmxtools-<version>-macos-amd64` |
-| macOS (arm64) | `pmxtools-<version>-macos-arm64` |
+| macOS (Apple Silicon) | `build-darwin-arm64.zip` |
+| macOS (Intel) | `build-darwin-amd64.zip` |
+| Windows (amd64) | `build-windows-amd64.zip` |
+| Linux (amd64) | `build-linux-amd64.zip` |
+| Linux (arm64) | `build-linux-arm64.zip` |
 
-**Version history:**
-
-| Version | Build |
-|---|---|
-| 0.1.3 | R100926 |
-| 0.1.2 | R170626 |
-| 0.1.1 | R120626 |
-| 0.1.0 | R100326 |
-
-### pmxtools-ui
-
-Native desktop app, built per OS/architecture and published as a GitHub Release with zipped platform artifacts on every version tag:
-
-| Platform | Artifact |
-|---|---|
-| macOS (amd64) | `darwin-amd64.zip` |
-| macOS (arm64) | `darwin-arm64.zip` |
-| Windows (amd64) | `windows-amd64.zip` |
-| Linux (amd64) | `linux-amd64.zip` |
-| Linux (arm64) | `linux-arm64.zip` |
-
-**Version history:**
-
-| Version | Build |
-|---|---|
-| 0.1.1 | R100926 |
-| 0.1.0 | R140726 |
-
----
-
-## How releases get here
-
-`.github/workflows/mirror-releases.yml` runs in this repo on a schedule (every
-30 minutes) and on manual dispatch. It checks `pmxtools-cli` and `pmxtools-ui`
-for releases not yet mirrored here and republishes each one as an exact copy
-(same assets, same changelog section) under a prefixed tag — `cli-v<version>-
-<build>` / `ui-v<version>-<build>` — so this repo stays the canonical public
-place to find a release without needing access to either private repo.
+Release tags follow the format `v<version>-<build>`, and each release carries its own changelog in the release notes.
 
 ---
 
